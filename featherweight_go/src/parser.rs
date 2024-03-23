@@ -1,12 +1,12 @@
 use std::collections::HashMap;
-use Token;
 use parser::Type as TypeEnum;
+use common::token::Token;
 
 peg::parser!(
-    pub(crate) grammar language<'a>() for [Token<'a>] {
-        use Token::*;
-
-        pub(crate) rule parse() -> Program<'a>
+    pub(crate) grammar language<'a>() for [Token<'a>] {        
+        use common::token::Token::*;
+        
+        pub(crate) rule parse_program() -> Program<'a>
             = [Package] [Main] [Semicolon] declarations:declaration()* [Function] [Main] [LeftParenthesis] [RightParenthesis] [LeftCurlyBrace] [Underscore] [Equals] body:expression() [RightCurlyBrace] {
                 Program { declarations, expression: Box::new(body) }
             }
